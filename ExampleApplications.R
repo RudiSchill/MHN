@@ -1,0 +1,43 @@
+
+source("UtilityFunctions.R")
+source("ModelConstruction.R")
+source("Likelihood.R")
+source("RegularizedOptimization.R")
+
+
+#Simulation-------------------------
+set.seed(1)
+
+#Create a true MHN with random parameters (in log-space)
+Theta.true <- Random.Theta(n=8, sparsity=0.50)
+pTh <- Generate.pTh(Theta.true)
+
+#Estimate the model from an empirical sample
+pD  <- Finite.Sample(pTh, 500)
+Theta.hat <- Learn.MHN(pD, lambda=1/500)
+KL.Div(pTh, Generate.pTh(Theta.hat))
+
+#Given the true distribution, parameters can often be recovered exactly
+Theta.rec <- Learn.MHN(pTh, lambda=0, reltol=1e-13)
+
+
+
+#Cancer Progression Data----------------
+
+Dat <- read.csv("BreastCancer.csv", header=F, sep=" ")
+
+pD <- Data.to.pD(Dat)
+Theta.BC <- Learn.MHN(pD, lambda=0.01)
+
+colnames(Theta.BC) <- c("+1q","+3q","-8p","+8q","-11q","-13q","+16p",
+                        "-16q","+17q","+20q")
+rownames(Theta.BC) <- colnames(Theta.BC)
+
+View(exp(Theta.BC))
+
+
+
+
+
+
+
