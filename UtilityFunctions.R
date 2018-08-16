@@ -1,4 +1,4 @@
-require("rmutil")
+
 
 #Convert a state from a bit-vector to a natural number.
 State.to.Int <- function(x){

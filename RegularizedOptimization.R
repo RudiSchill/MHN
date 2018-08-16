@@ -36,8 +36,9 @@ Grad.Reg  <- function(Theta, pD, lambda){
 Learn.MHN <- function(pD, init=NULL, lambda=0 ,maxit=5000, trace=0, reltol=1e-07, round=T){
   n <- log(length(pD), base=2)
   
+  #Initialize the parameters from the independence model
   if(is.null(init)){
-    init <- rep(0,n^2)
+    init <- Learn.Indep(pD)
   } 
   
   opt <- optim(init, fn=Score.Reg, gr=Grad.Reg, pD, lambda, method="BFGS", 

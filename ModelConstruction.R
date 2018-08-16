@@ -58,6 +58,20 @@ Q.Diag <- function(Theta){
   return(dg)
 }
 
-
+#Learn an independence model from the data distribution, which assumes that no events interact. 
+#Used to initialize the parameters of the actual model before optimization.
+Learn.Indep <- function(pD){
+  n <- log(length(pD), base=2)
+  Theta <- matrix(0, nrow=n, ncol=n)
+  
+  for(i in 1:n){
+    pD <- matrix(pD, nrow=2^(n-1), ncol=2, byrow=T)    
+    
+    perc <- sum(pD[,2])
+    Theta[i,i] <- log(perc/(1-perc))
+  }
+  
+  return(round(Theta,2))
+}
 
 
