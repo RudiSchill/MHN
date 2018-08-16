@@ -24,13 +24,12 @@ Theta.rec <- Learn.MHN(pTh, lambda=0, reltol=1e-13)
 
 #Cancer Progression Data----------------
 
-Dat <- read.csv("BreastCancer.csv", header=F, sep=" ")
+Dat <- readRDS(file="data/BreastCancer.rds") 
 
 pD <- Data.to.pD(Dat)
 Theta.BC <- Learn.MHN(pD, lambda=0.01)
 
-colnames(Theta.BC) <- c("+1q","+3q","-8p","+8q","-11q","-13q","+16p",
-                        "-16q","+17q","+20q")
+colnames(Theta.BC) <- colnames(Dat)
 rownames(Theta.BC) <- colnames(Theta.BC)
 
 View(exp(Theta.BC))

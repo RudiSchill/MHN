@@ -9,7 +9,7 @@ Random.Theta <- function(n, sparsity=0){
   diag(Theta)  <- NA
   nonZeros <- sample(which(!is.na(Theta)), size=(n^2 - n)*(1 - sparsity))
   
-  Theta[nonZeros] <- rlaplace(length(nonZeros))
+  Theta[nonZeros] <- rnorm(length(nonZeros))
   diag(Theta) <- rnorm(n)
   
   return(round(Theta,2))
