@@ -122,5 +122,5 @@ code_grad_loop_j <- "
 grad_loop_j <- cfunction(signature(i_="integer", n_="integer", r="numeric"),
                          body=code_grad_loop_j,
                          language=c("C"),
-                         cppargs=c("-fopenmp -ftree-vectorize"))
+                         cppargs=c("-ftree-vectorize"))
 
