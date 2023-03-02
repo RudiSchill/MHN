@@ -11,7 +11,7 @@ source("RegularizedOptimization.R")
 Data <- readRDS(file="data/BreastCancer.rds") 
 
 #Learn an MHN from data with sparsity hyperparameter lambda
-Theta <- MHN(Data, lambda=0.1)
+Theta <- MHN(Data, lambda=0.01)
 
 #Generate a synthetic dataset from an MHN
 SyntheticData <- SampleMHN(Theta, size=1000)
