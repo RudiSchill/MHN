@@ -32,3 +32,17 @@ KL.Div <- function(p,q){
   as.numeric(p%*%log(p) - p%*%log(q))
 }
 
+#Convenient wrapper function to learn an MHN directly from data
+MHN <- function(Dat, lambda=NULL, logarithmic=TRUE){
+  if(is.null(lambda)) lambda <- 1/nrow(Dat)
+  
+  pD <- Data.to.pD(Dat)
+  Theta <- Learn.MHN(pD, lambda=lambda)
+  
+  colnames(Theta) <- colnames(Dat)
+  rownames(Theta) <- colnames(Dat)
+  if(!logarithmic) Theta <- exp(Theta)
+  
+  return(Theta)
+}
+
