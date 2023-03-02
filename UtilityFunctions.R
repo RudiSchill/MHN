@@ -41,8 +41,45 @@ MHN <- function(Dat, lambda=NULL, logarithmic=TRUE){
   
   colnames(Theta) <- colnames(Dat)
   rownames(Theta) <- colnames(Dat)
-  if(!logarithmic) Theta <- exp(Theta)
   
   return(Theta)
 }
+
+#Generate a single synthetic data point from a given MHN
+SingleDatapoint <- function(theta){
+  n <- ncol(theta)
+  x <- rep(0, n)
+  b <- diag(theta)
+  diag(theta) <- 0  
+  
+  observation_time <- rexp(1,1)
+  
+  t <- 0
+  for(i in 1:n){
+    rates <- exp(as.vector(theta%*%x) + b)
+    rates[which(x==1)] <- 0
+    Z <- sum(rates)
+    
+    t <- t + rexp(1, rate=Z)
+    if(t >= observation_time) break;
+    
+    next_event <- sample(1:n, size=1, prob=rates/Z)
+    x[next_event] <- 1
+  }
+  
+  return(x)
+}
+
+#Generate a synthetic dataset from an MHN
+SampleMHN <- function(theta, size=1000){
+  Dat <- matrix(0, nrow=size, ncol=ncol(theta))
+  colnames(Dat) <- colnames(theta)
+  
+  for(i in 1:size){
+    Dat[i,] <- SingleDatapoint(theta)
+  }
+  return(Dat)
+}
+
+
 
